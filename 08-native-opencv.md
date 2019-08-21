@@ -41,8 +41,8 @@ XCS~$ sudo apt-get install python-dev python-numpy libtbb2 libtbb-dev libjpeg-de
         -D BUILD_TESTS=NO \
         -D BUILD_PERF_TESTS=NO \
         -D BUILD_PYTHON_SUPPORT=ON \
-        -D OPENCV_EXTRA_MODULES_PATH=/home/pi/src/opencv_contrib-3.2.0/modules \
-        /home/pi/src/opencv-3.2.0 
+        -D OPENCV_EXTRA_MODULES_PATH=/home/connor/src/opencv_contrib-3.2.0/modules \
+        /home/connor/src/opencv-3.2.0 
         
         ...
 
@@ -50,7 +50,7 @@ XCS~$ sudo apt-get install python-dev python-numpy libtbb2 libtbb-dev libjpeg-de
         --   Version control:               unknown
         -- 
         --   Extra modules:
-        --     Location (extra):            /home/pi/src/opencv_contrib-3.2.0/modules
+        --     Location (extra):            /home/connor/src/opencv_contrib-3.2.0/modules
         --     Version control (extra):     unknown
         -- 
         --   Platform:
@@ -128,7 +128,7 @@ XCS~$ sudo apt-get install python-dev python-numpy libtbb2 libtbb-dev libjpeg-de
         -- 
         --   Other third-party libraries:
         --     Use IPP:                     9.0.1 [9.0.1]
-        --          at:                     /home/pi/build/opencv/3rdparty/ippicv/ippicv_lnx
+        --          at:                     /home/connor/build/opencv/3rdparty/ippicv/ippicv_lnx
         --     Use IPP Async:               NO
         --     Use VA:                      NO
         --     Use Intel VA-API/OpenCL:     NO
@@ -140,7 +140,7 @@ XCS~$ sudo apt-get install python-dev python-numpy libtbb2 libtbb-dev libjpeg-de
         --     Use custom HAL:              NO
         -- 
         --   OpenCL:                        <Dynamic loading of OpenCL library>
-        --     Include path:                /home/pi/src/opencv-3.2.0/3rdparty/include/opencl/1.2
+        --     Include path:                /home/connor/src/opencv-3.2.0/3rdparty/include/opencl/1.2
         --     Use AMDFFT:                  NO
         --     Use AMDBLAS:                 NO
         -- 
@@ -173,12 +173,12 @@ XCS~$ sudo apt-get install python-dev python-numpy libtbb2 libtbb-dev libjpeg-de
         -- 
         --   Install path:                  /usr/local
         -- 
-        --   cvconfig.h is in:              /home/pi/build/opencv
+        --   cvconfig.h is in:              /home/connor/build/opencv
         -- -----------------------------------------------------------------
         -- 
         -- Configuring done
         -- Generating done
-        -- Build files have been written to: /home/pi/build/opencv
+        -- Build files have been written to: /home/connor/build/opencv
     ```
 
 1. Build and install

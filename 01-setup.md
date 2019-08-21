@@ -104,7 +104,7 @@ As I prefer the development enviroment of my HOST-system, developed code will be
 1. Create link to home-folder so we can access our (user-)code easily.
 
     ```
-    XCS~$ ln -s /media/sf_code /home/pi/code
+    XCS~$ ln -s /media/sf_code /home/connor/code
     ```
 
 ## Raspberry Pi
@@ -135,7 +135,7 @@ Source: https://www.raspberrypi.org/documentation/installation/installing-images
       └─sdb2                        8:18   1  7.3G  0 part 
       sr0                          11:0    1 55.7M  0 rom  
     
-    XCS~$ sudo dd bs=4M if=/home/pi/rpi/img/2017-03-02-raspbian-jessie-lite.img of=/dev/sdb
+    XCS~$ sudo dd bs=4M if=/home/connor/rpi/img/2017-03-02-raspbian-jessie-lite.img of=/dev/sdb
     ```
 1. Validate that the image is properly copied
 

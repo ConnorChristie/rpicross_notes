@@ -57,7 +57,7 @@ Steps:
     XCS~$ mkdir -p ~/rpi/build/hello/wiringpi
     XCS~$ cd ~/rpi/build/hello/wiringpi
     XCS~$ cmake \
-     -D CMAKE_TOOLCHAIN_FILE=/home/pi/rpicross_notes/rpi-generic-toolchain.cmake \
+     -D CMAKE_TOOLCHAIN_FILE=/home/connor/rpicross_notes/rpi-generic-toolchain.cmake \
      ~/rpicross_notes/hello/wiringpi
     XCS~$ make
     ```

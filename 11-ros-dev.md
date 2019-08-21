@@ -73,7 +73,7 @@ Optional:
     XCS~$ mkdir -p ~/ros/<packagename> 
     XCS~$ cd ~/ros/<packagename>
     XCS~$ cmake \
-        -DCMAKE_TOOLCHAIN_FILE=/home/pi/rpicross_notes/rpi-generic-toolchain.cmake \
+        -DCMAKE_TOOLCHAIN_FILE=/home/connor/rpicross_notes/rpi-generic-toolchain.cmake \
         <path>/<to>/<package>
     XCS~$ make
     ```

@@ -10,7 +10,7 @@ fi
 rsync -auHWv $host:{/usr,/lib} ~/rpi/rootfs
 
 # fix links
-TARGET_ROOT="/home/pi/rpi/rootfs"
+TARGET_ROOT="/home/connor/rpi/rootfs"
 
 CMD=""
 CMD="$CMD ln -sf $TARGET_ROOT/lib/arm-linux-gnueabihf/librt.so.1 $TARGET_ROOT/usr/lib/arm-linux-gnueabihf/librt.so;"

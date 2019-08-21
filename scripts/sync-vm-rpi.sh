@@ -7,7 +7,7 @@ if [ -z "$1" ]; then
 fi
 
 # sync
-rsync -auHWv --no-perms --no-owner --no-group /home/pi/rpi/rootfs/ $host:/
+rsync -auHWv --no-perms --no-owner --no-group /home/connor/rpi/rootfs/ $host:/
 
 # fix links
 TARGET_ROOT=""

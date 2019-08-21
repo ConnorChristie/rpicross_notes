@@ -36,9 +36,9 @@ As mentioned before, the use of `rsync` results in broken symlinks. Hence we nee
     > When using the [`sync`-scripts](scripts), this step can be omitted.
 
     ```
-    XCS~$ ln -sf /home/pi/rpi/rootfs/lib/arm-linux-gnueabihf/librt.so.1 /home/pi/rpi/rootfs/usr/lib/arm-linux-gnueabihf/librt.so
-    XCS~$ ln -sf /home/pi/rpi/rootfs/lib/arm-linux-gnueabihf/libbz2.so.1.0 /home/pi/rpi/rootfs/usr/lib/arm-linux-gnueabihf/libbz2.so
-    XCS~$ ln -sf /home/pi/rpi/rootfs/usr/lib/arm-linux-gnueabihf/libpython2.7.so.1.0 /home/pi/rpi/rootfs/usr/lib/arm-linux-gnueabihf/libpython2.7.so
+    XCS~$ ln -sf /home/connor/rpi/rootfs/lib/arm-linux-gnueabihf/librt.so.1 /home/connor/rpi/rootfs/usr/lib/arm-linux-gnueabihf/librt.so
+    XCS~$ ln -sf /home/connor/rpi/rootfs/lib/arm-linux-gnueabihf/libbz2.so.1.0 /home/connor/rpi/rootfs/usr/lib/arm-linux-gnueabihf/libbz2.so
+    XCS~$ ln -sf /home/connor/rpi/rootfs/usr/lib/arm-linux-gnueabihf/libpython2.7.so.1.0 /home/connor/rpi/rootfs/usr/lib/arm-linux-gnueabihf/libpython2.7.so
     ```
     
 1. `ROS` uses `gtest` for several tests. The `apt-get` call for `libgtest-dev` only installs the source for `gtest`, therefore we need to crosscompile it for ourselfs to generate the libraries, using [rpi-generic-toolchain](rpi-generic-toolchain.cmake).
@@ -46,10 +46,10 @@ As mentioned before, the use of `rsync` results in broken symlinks. Hence we nee
     XCS~$ mkdir -p ~/rpi/build/gtest
     XCS~$ cd ~/rpi/build/gtest
     XCS~$ cmake \
-       -D CMAKE_TOOLCHAIN_FILE=/home/pi/rpicross_notes/rpi-generic-toolchain.cmake \
-       /home/pi/rpi/rootfs/usr/src/gtest
+       -D CMAKE_TOOLCHAIN_FILE=/home/connor/rpicross_notes/rpi-generic-toolchain.cmake \
+       /home/connor/rpi/rootfs/usr/src/gtest
     XCS~$ make
-    XCS~$ mv *.a /home/pi/rpi/rootfs/usr/lib
+    XCS~$ mv *.a /home/connor/rpi/rootfs/usr/lib
     ```
     > SOURCE: https://www.eriksmistad.no/getting-started-with-google-test-on-ubuntu/
     > There is not `make install` so the generated libraries need to be copied manually to the appropriate folder.
@@ -61,10 +61,10 @@ As mentioned before, the use of `rsync` results in broken symlinks. Hence we nee
     XCS~$ mkdir -p ~/rpi/build/console_bridge
     XCS~$ cd ~/rpi/build/console_bridge
     XCS~$ cmake \
-        -D CMAKE_TOOLCHAIN_FILE=/home/pi/rpicross_notes/rpi-generic-toolchain.cmake \
-        /home/pi/rpi/src/console_bridge
+        -D CMAKE_TOOLCHAIN_FILE=/home/connor/rpicross_notes/rpi-generic-toolchain.cmake \
+        /home/connor/rpi/src/console_bridge
     XCS~$ make
-    XCS~$ make install DESTDIR=/home/pi/rpi/rootfs
+    XCS~$ make install DESTDIR=/home/connor/rpi/rootfs
     ```
     
 1. After installing all dependencies, init `rosdep`.
@@ -74,7 +74,7 @@ As mentioned before, the use of `rsync` results in broken symlinks. Hence we nee
     ```
 
 1. Create `catkin` workspace for the RPi-builds.
-    > Note that this workspace is not located in the `~/rpi` or `~/rpi/rootfs` directories. Because ROS comes with its own environment management system, a seperate directory is created which is synced with the RPi in a similar way as `rootfs`. Most important is that the path of the workspace in the VM equals (`/home/pi/ros/src_cross`) the path to which the workspace is synchronised on the RPi (which will be `/home/pi/ros/src_cross`).
+    > Note that this workspace is not located in the `~/rpi` or `~/rpi/rootfs` directories. Because ROS comes with its own environment management system, a seperate directory is created which is synced with the RPi in a similar way as `rootfs`. Most important is that the path of the workspace in the VM equals (`/home/connor/ros/src_cross`) the path to which the workspace is synchronised on the RPi (which will be `/home/connor/ros/src_cross`).
     
     ```
     XCS~$ mkdir -p ~/ros/src_cross
@@ -91,7 +91,7 @@ As mentioned before, the use of `rsync` results in broken symlinks. Hence we nee
     ```
     XCS~$ ./src/catkin/bin/catkin_make_isolated \
         -DCMAKE_BUILD_TYPE=Release \
-        -DCMAKE_TOOLCHAIN_FILE=/home/pi/rpicross_notes/rpi-generic-toolchain.cmake
+        -DCMAKE_TOOLCHAIN_FILE=/home/connor/rpicross_notes/rpi-generic-toolchain.cmake
     ```
     > This creates two folders: `devel_isolated` and `build_isolated` of which the latter can be ignored.
 
@@ -118,7 +118,7 @@ When additional ros-packages are needed, but ROS is already build, the following
     ```
     XCS~$ ./src/catkin/bin/catkin_make_isolated \
         -DCMAKE_BUILD_TYPE=Release \
-        -DCMAKE_TOOLCHAIN_FILE=/home/pi/rpicross_notes/rpi-generic-toolchain.cmake
+        -DCMAKE_TOOLCHAIN_FILE=/home/connor/rpicross_notes/rpi-generic-toolchain.cmake
     ```
 
 ## Synchronisation
@@ -129,32 +129,32 @@ Starting with `rootfs`:
 
 1. Use a direct call:
     ```
-    XCS~$ sudo rsync -auHWv --no-perms --no-owner --no-group /home/pi/rpi/rootfs/ rpizero-local-root:/
+    XCS~$ sudo rsync -auHWv --no-perms --no-owner --no-group /home/connor/rpi/rootfs/ rpizero-local-root:/
     ```
 1. Or use the [link-correcting script](4-xc-setup.md#init-repository):
     ```
-    XCS~$ /home/pi/rpicross_notes/scripts/sync-vm-rpi.sh
+    XCS~$ /home/connor/rpicross_notes/scripts/sync-vm-rpi.sh
     ```
 
 And for `~/ros/src_cross`:
 
 1. Use a direct call:
     ```
-    XCS~$ rsync -auHWv --no-perms --no-owner --no-group /home/pi/ros/src_cross/devel_isolated rpizero-local:/
-    XCS~$ rsync -auHWv --no-perms --no-owner --no-group /home/pi/ros/src_cross/src rpizero-local:/
+    XCS~$ rsync -auHWv --no-perms --no-owner --no-group /home/connor/ros/src_cross/devel_isolated rpizero-local:/
+    XCS~$ rsync -auHWv --no-perms --no-owner --no-group /home/connor/ros/src_cross/src rpizero-local:/
     ```
-    > Which copies both `devel_isolated` and `src` from `/home/pi/ros/src_cross/*` (VM) to `/home/pi/ros/src_cross/*` (RPi)
+    > Which copies both `devel_isolated` and `src` from `/home/connor/ros/src_cross/*` (VM) to `/home/connor/ros/src_cross/*` (RPi)
 
 1. Or use this script:
     ```
-    XCS~$ /home/pi/rpicross_notes/scripts/sync-ros.sh
+    XCS~$ /home/connor/rpicross_notes/scripts/sync-ros.sh
     ```
 
 1. Unfortunatly ROS includes the path to `rootfs` and subsequent libraries in its binairies. To enable ROS on the RPi to find the proper libraries, a symbolic link is created, simulating the path to `rootfs`
     ```
     XCS~$ ssh rpizero-local
-    RPI~$ mkdir -p /home/pi/rpi
-    RPI~$ ln -s / /home/pi/rpi/rootfs
+    RPI~$ mkdir -p /home/connor/rpi
+    RPI~$ ln -s / /home/connor/rpi/rootfs
     ```
     
 ## Testing
@@ -179,11 +179,11 @@ Steps:
     XCS~$ mkdir -p ~/rpi/build/hello/ros
     XCS~$ cd ~/rpi/build/hello/ros
     XCS~$ cmake \
-        -D CMAKE_TOOLCHAIN_FILE=/home/pi/rpicross_notes/rpi-generic-toolchain.cmake \
+        -D CMAKE_TOOLCHAIN_FILE=/home/connor/rpicross_notes/rpi-generic-toolchain.cmake \
         ~/rpicross_notes/hello/ros/
     XCS~$ make
     ```
-    > Note that the toolchain sets the proper path for pkg-config (`/home/pi/ros/src_cross/devel_isolated`) to find `XXXConfig.cmake` files for ROS. 
+    > Note that the toolchain sets the proper path for pkg-config (`/home/connor/ros/src_cross/devel_isolated`) to find `XXXConfig.cmake` files for ROS. 
     
 1. Transfer `helloros` to the RPi (located in `devel/lib/helloros`)
     ```
@@ -196,7 +196,7 @@ Steps:
        XCS~$ ssh rpizero-local
        RPI~$ source ~/ros/src_cross/devel_isolated/setup.bash 
        RPI~$ roscore
-         ... logging to /home/pi/.ros/log/9d57fc26-0efa-11e7-97cb-b827eb418803/roslaunch-rpizw-hessel.local-893.log
+         ... logging to /home/connor/.ros/log/9d57fc26-0efa-11e7-97cb-b827eb418803/roslaunch-rpizw-hessel.local-893.log
          Checking log directory for disk usage. This may take awhile.
          Press Ctrl-C to interrupt
          Done checking log file disk usage. Usage is <1GB.

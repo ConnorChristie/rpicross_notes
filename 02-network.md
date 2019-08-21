@@ -23,12 +23,12 @@ As we have a functioning VM and as we have installed Raspbian on the SDCard, let
     
 1. Mount SDCard
     ```
-    XCS~$ sudo mount /dev/sdb2 /home/pi/rpi/mnt 
+    XCS~$ sudo mount /dev/sdb2 /home/connor/rpi/mnt 
     ```
     
 1. If required, setup static ipaddress, DNS-servers and/or router IP:
     ```
-    XCS~$ sudo nano /home/pi/rpi/mnt/etc/dhcpcd.conf
+    XCS~$ sudo nano /home/connor/rpi/mnt/etc/dhcpcd.conf
     ```
     
     Edit and add the following lines to `dhcpcd.conf` as required for your setup: 
@@ -51,7 +51,7 @@ As we have a functioning VM and as we have installed Raspbian on the SDCard, let
     
 1. Setup WiFi credentials
     ```
-    XCS~$ sudo nano /home/pi/rpi/mnt/etc/wpa_supplicant/wpa_supplicant.conf
+    XCS~$ sudo nano /home/connor/rpi/mnt/etc/wpa_supplicant/wpa_supplicant.conf
     ```
     
     Add the required credentials. In this example, the order equals the connection order. So initially `network1` is tried for setting up a connection, after which, when failing/not available, `network2` is tested.
@@ -73,18 +73,18 @@ By default, the hostname of a RPi is `raspberrypi`, hence the RPi can be accesse
 
 1. Mount largest partion of the SDCard in the VM.
     ```
-    XCS~$ sudo mount /dev/sdb2 /home/pi/rpi/mnt 
+    XCS~$ sudo mount /dev/sdb2 /home/connor/rpi/mnt 
     ```
     
 1. Edit `hostname`
     ```
-    XCS~$ nano /home/pi/rpi/mnt/etc/hostname
+    XCS~$ nano /home/connor/rpi/mnt/etc/hostname
     ```
     
 1. Change `raspberrypi` in e.g. `rpizw`
 1. Edit `hosts`
     ```
-    XCS~$ nano /home/pi/rpi/mnt/etc/hosts
+    XCS~$ nano /home/connor/rpi/mnt/etc/hosts
     ```
     
 1. Change `127.0.0.1 raspberrypi` in e.g. `127.0.0.1 rpizw`. 
@@ -92,7 +92,7 @@ By default, the hostname of a RPi is `raspberrypi`, hence the RPi can be accesse
   
 1. Finish setup by unmounting the mounted partition
     ```
-    XCS~$ sudo umount /home/pi/rpi/mnt
+    XCS~$ sudo umount /home/connor/rpi/mnt
     ```
   
 ## SSH Setup
@@ -115,17 +115,17 @@ By default, the hostname of a RPi is `raspberrypi`, hence the RPi can be accesse
       └─sdb2                        8:18   1  7.3G  0 part
       sr0                          11:0    1 55.7M  0 rom   
 
-    XCS~$ sudo mount /dev/sdb1 /home/pi/rpi/mnt 
+    XCS~$ sudo mount /dev/sdb1 /home/connor/rpi/mnt 
     ```
     
 1. Add ssh file
     ```
-    XCS~$ sudo touch /home/pi/rpi/mnt/ssh
+    XCS~$ sudo touch /home/connor/rpi/mnt/ssh
     ```
     
 1. Finish setup by unmounting the mounted partition
     ```
-    XCS~$ sudo umount /home/pi/rpi/mnt
+    XCS~$ sudo umount /home/connor/rpi/mnt
     ```
   
 ### RPi: First Boot
@@ -160,7 +160,7 @@ Currently, you need to type your password each time you connect with the RPi. Wi
     XCS~$ cd~/.ssh
     XCS~$ ssh-keygen -t rsa
       Generating public/private rsa key pair.
-      Enter file in which to save the key (/home/pi/.ssh/id_rsa): rpizero_rsa
+      Enter file in which to save the key (/home/connor/.ssh/id_rsa): rpizero_rsa
       Enter passphrase (empty for no passphrase): <empty>
       Enter same passphrase again: <empty>
       Your identification has been saved in rpizero_rsa.
@@ -204,7 +204,7 @@ Currently, you need to type your password each time you connect with the RPi. Wi
 1. Allow bash to invoke the configuration upon a ssh-call
     ```
     XCS~$ ssh-agent bash
-    XCS~$ ssh-add /home/pi/.ssh/rpizero_rsa
+    XCS~$ ssh-add /home/connor/.ssh/rpizero_rsa
     ```
     
 1. Test connection:
@@ -293,12 +293,12 @@ When the RPi is used in an environment without network connectivity, enabling SS
       └─sdb2                        8:18   1  7.3G  0 part
       sr0                          11:0    1 55.7M  0 rom   
 
-    XCS~$ sudo mount /dev/sdb1 /home/pi/rpi/mnt 
+    XCS~$ sudo mount /dev/sdb1 /home/connor/rpi/mnt 
     ```
     
 1. Update the configuration file
     ```
-    XCS~$ sudo nano /home/pi/rpi/mnt/config.txt 
+    XCS~$ sudo nano /home/connor/rpi/mnt/config.txt 
     ```
     
     Add the following at the bottom of the file:
@@ -309,7 +309,7 @@ When the RPi is used in an environment without network connectivity, enabling SS
     
 1. Update `cmdline.txt`
     ```
-    XCS~$ sudo nano /home/pi/rpi/mnt/cmdline.txt
+    XCS~$ sudo nano /home/connor/rpi/mnt/cmdline.txt
     ```
     
     Add `modules-load=dwc2,g_ether` right after `rootwait`. Because this file is very sensitive to enter, space or tabs, make sure you do not add additional characters to it. After editing the final file might look like:
@@ -319,7 +319,7 @@ When the RPi is used in an environment without network connectivity, enabling SS
 
 1. Unmount SDCard
     ```
-    XCS~$ sudo umount /home/pi/rpi/mnt
+    XCS~$ sudo umount /home/connor/rpi/mnt
     ```
     
 1. Bootup the RPI with the USB cable connected to your local machine and to the USB port of the device. Make sure that in case of the Raspberry Pi Zero you do not connect the USB cable with with the PWR port as this port does not support the USB protocol.

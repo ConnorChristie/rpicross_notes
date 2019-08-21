@@ -64,7 +64,7 @@ In a similar manner as the SSH-setting (see [Installation](01-setup.md#installat
     XCS~$ mkdir -p ~/ros/chatter_cross
     XCS~$ cd ~/ros/chatter_cross
     XCS~$ cmake \
-        -DCMAKE_TOOLCHAIN_FILE=/home/pi/rpicross_notes/rpi-generic-toolchain.cmake \
+        -DCMAKE_TOOLCHAIN_FILE=/home/connor/rpicross_notes/rpi-generic-toolchain.cmake \
         ~/rpicross_notes/ros/chatter
     XCS~$ make
     XCS~$ ~/rpicross_notes/scripts/sync-ros.sh

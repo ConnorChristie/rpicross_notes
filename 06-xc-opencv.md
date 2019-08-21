@@ -39,7 +39,7 @@ To crosscompile `OpenCV`, only packages on the RPi need te be installed.
     ```
 1. After downloading, we need to edit the `OpenCV`-arm toolchain as it does not support the Raspberry Pi Zero `armv6 hf` core properly. 
     ```
-    XCS~$ nano /home/pi/rpi/src/opencv-3.2.0/platforms/linux/arm.toolchain.cmake
+    XCS~$ nano /home/connor/rpi/src/opencv-3.2.0/platforms/linux/arm.toolchain.cmake
     ```
     
     Change the '-mthumb' flags to '-marm'. The resulting file should look similarly to:
@@ -56,12 +56,12 @@ To crosscompile `OpenCV`, only packages on the RPi need te be installed.
     > The toolchain presumes that a `thumb` instruction set is available which consists of 32 and 16 bits instructions. As it uses multiple widths of instructions, the `thumb` architecture is able to combine instructions and hence speed up processing time. Only `armv7` or higher has this ability, hence it does not apply to the BCM2835 of the RPi.
    
 1. Edit libc.so and libpthreads.so 
-    > Compilation of `OpenCV` uses `libc.so` and `libpthread.so` located in `/home/pi/rpi/rootfs/usr/lib/arm-linux-gnueabihf/`. These two files are not real libraries, but link to those required. Unfortunalty, they include the absolute path from `rootfs`, which will produce compile errors as the compiler cannot find it. Hence we need to edit these.
+    > Compilation of `OpenCV` uses `libc.so` and `libpthread.so` located in `/home/connor/rpi/rootfs/usr/lib/arm-linux-gnueabihf/`. These two files are not real libraries, but link to those required. Unfortunalty, they include the absolute path from `rootfs`, which will produce compile errors as the compiler cannot find it. Hence we need to edit these.
     > A better solution might be available, as this might cause additional issues, but so far all seems to be ok. 
     
     - libc.so:
         ```
-        XCS~$ nano /home/pi/rpi/rootfs/usr/lib/arm-linux-gnueabihf/libc.so
+        XCS~$ nano /home/connor/rpi/rootfs/usr/lib/arm-linux-gnueabihf/libc.so
         ```
             
         Change 
@@ -76,7 +76,7 @@ To crosscompile `OpenCV`, only packages on the RPi need te be installed.
             
     - libpthread.so:
         ```
-        XCS~$ nano /home/pi/rpi/rootfs/usr/lib/arm-linux-gnueabihf/libpthread.so
+        XCS~$ nano /home/connor/rpi/rootfs/usr/lib/arm-linux-gnueabihf/libpthread.so
         ```
             
         Change 
@@ -92,7 +92,7 @@ To crosscompile `OpenCV`, only packages on the RPi need te be installed.
 1. Several `CMAKE` settings need to be configured to compile OpenCV and the Python bindings properly. For convenience `OpenCVMinDepVersions.cmake` is adjusted. 
 
     ```
-    XCS~$ nano /home/pi/rpi/src/opencv-3.2.0/cmake/OpenCVMinDepVersions.cmake 
+    XCS~$ nano /home/connor/rpi/src/opencv-3.2.0/cmake/OpenCVMinDepVersions.cmake 
     ```
     Add the following lines to the cmake file:
   
@@ -151,12 +151,12 @@ To crosscompile `OpenCV`, only packages on the RPi need te be installed.
     - Since the RPi libraries are build for an arm-platform and the compiler only understands x84 binaries, `cmake` is unable to detect the proper Python parameters for python-bindings. The values specified at the bottom of the code-snippet enable `cmake` to find the proper files. It should be noted that this action only works when the same Python versions are installed on both the RPi and in the VM! Furthermore, the provided setup only creates Python-bindings for Python2.7. To use Python3.0, the proper `numpy` need to be installed and probably similar settings need to be set. 
     - Ideally, the `CMAKE_SYSROOT` command should be used to set to rootfs for a crosscompilation target. However, I did not succeed at setting the parameter properly and therefor use the `sysroot` located at:
         ```
-        /home/pi/rpi/tools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/arm-linux-gnueabihf/sysroot
+        /home/connor/rpi/tools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/arm-linux-gnueabihf/sysroot
         ```
         
         The encountered error message was:
         ```
-        /home/pi/rpi/tools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/bin/../lib/gcc/arm-linux-gnueabihf/4.9.3/../../../../arm-linux-gnueabihf/bin/ld:
+        /home/connor/rpi/tools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/bin/../lib/gcc/arm-linux-gnueabihf/4.9.3/../../../../arm-linux-gnueabihf/bin/ld:
         cannot find crt1.o: No such file or directory
         ```
         
@@ -175,13 +175,13 @@ To crosscompile `OpenCV`, only packages on the RPi need te be installed.
     XCS~$ mkdir -p ~/rpi/build/opencv
     XCS~$ cd ~/rpi/build/opencv
     XCS~$ cmake \
-        -D RPI_ROOTFS=/home/pi/rpi/rootfs \
+        -D RPI_ROOTFS=/home/connor/rpi/rootfs \
         -D BUILD_TESTS=NO \
         -D BUILD_PERF_TESTS=NO \
         -D BUILD_PYTHON_SUPPORT=ON \
-        -D OPENCV_EXTRA_MODULES_PATH=/home/pi/rpi/src/opencv_contrib-3.2.0/modules \
-        -D CMAKE_TOOLCHAIN_FILE=/home/pi/rpi/src/opencv-3.2.0/platforms/linux/arm.toolchain.cmake \
-        /home/pi/rpi/src/opencv-3.2.0
+        -D OPENCV_EXTRA_MODULES_PATH=/home/connor/rpi/src/opencv_contrib-3.2.0/modules \
+        -D CMAKE_TOOLCHAIN_FILE=/home/connor/rpi/src/opencv-3.2.0/platforms/linux/arm.toolchain.cmake \
+        /home/connor/rpi/src/opencv-3.2.0
     ```
     
     Which produces a summary looking like: 
@@ -191,7 +191,7 @@ To crosscompile `OpenCV`, only packages on the RPi need te be installed.
     --   Version control:               unknown
     -- 
     --   Extra modules:
-    --     Location (extra):            /home/pi/rpi/src/opencv_contrib-3.2.0/modules
+    --     Location (extra):            /home/connor/rpi/src/opencv_contrib-3.2.0/modules
     --     Version control (extra):     unknown
     -- 
     --   Platform:
@@ -206,11 +206,11 @@ To crosscompile `OpenCV`, only packages on the RPi need te be installed.
     --   C/C++:
     --     Built as dynamic libs?:      YES
     --     C++ Compiler:                /usr/bin/rpizero-g++  (ver 4.9.3)
-    --     C++ flags (Release):         -isystem /home/pi/rpi/rootfs/usr/include/arm-linux-gnueabihf -isystem /home/pi/rpi/rootfs/usr/include -isystem /home/pi/rpi/rootfs/usr/local/include   -fsigned-char -W -Wall -Werror=return-type -Werror=non-virtual-dtor -Werror=address -Werror=sequence-point -Wformat -Werror=format-security -Wmissing-declarations -Wundef -Winit-self -Wpointer-arith -Wshadow -Wsign-promo -Wno-narrowing -Wno-delete-non-virtual-dtor -Wno-comment -fdiagnostics-show-option -pthread -fomit-frame-pointer -mfp16-format=ieee -ffunction-sections -fvisibility=hidden -fvisibility-inlines-hidden -O3 -DNDEBUG  -DNDEBUG
-    --     C++ flags (Debug):           -isystem /home/pi/rpi/rootfs/usr/include/arm-linux-gnueabihf -isystem /home/pi/rpi/rootfs/usr/include -isystem /home/pi/rpi/rootfs/usr/local/include   -fsigned-char -W -Wall -Werror=return-type -Werror=non-virtual-dtor -Werror=address -Werror=sequence-point -Wformat -Werror=format-security -Wmissing-declarations -Wundef -Winit-self -Wpointer-arith -Wshadow -Wsign-promo -Wno-narrowing -Wno-delete-non-virtual-dtor -Wno-comment -fdiagnostics-show-option -pthread -fomit-frame-pointer -mfp16-format=ieee -ffunction-sections -fvisibility=hidden -fvisibility-inlines-hidden -g  -O0 -DDEBUG -D_DEBUG
+    --     C++ flags (Release):         -isystem /home/connor/rpi/rootfs/usr/include/arm-linux-gnueabihf -isystem /home/connor/rpi/rootfs/usr/include -isystem /home/connor/rpi/rootfs/usr/local/include   -fsigned-char -W -Wall -Werror=return-type -Werror=non-virtual-dtor -Werror=address -Werror=sequence-point -Wformat -Werror=format-security -Wmissing-declarations -Wundef -Winit-self -Wpointer-arith -Wshadow -Wsign-promo -Wno-narrowing -Wno-delete-non-virtual-dtor -Wno-comment -fdiagnostics-show-option -pthread -fomit-frame-pointer -mfp16-format=ieee -ffunction-sections -fvisibility=hidden -fvisibility-inlines-hidden -O3 -DNDEBUG  -DNDEBUG
+    --     C++ flags (Debug):           -isystem /home/connor/rpi/rootfs/usr/include/arm-linux-gnueabihf -isystem /home/connor/rpi/rootfs/usr/include -isystem /home/connor/rpi/rootfs/usr/local/include   -fsigned-char -W -Wall -Werror=return-type -Werror=non-virtual-dtor -Werror=address -Werror=sequence-point -Wformat -Werror=format-security -Wmissing-declarations -Wundef -Winit-self -Wpointer-arith -Wshadow -Wsign-promo -Wno-narrowing -Wno-delete-non-virtual-dtor -Wno-comment -fdiagnostics-show-option -pthread -fomit-frame-pointer -mfp16-format=ieee -ffunction-sections -fvisibility=hidden -fvisibility-inlines-hidden -g  -O0 -DDEBUG -D_DEBUG
     --     C Compiler:                  /usr/bin/rpizero-gcc
-    --     C flags (Release):           -isystem /home/pi/rpi/rootfs/usr/include/arm-linux-gnueabihf -isystem /home/pi/rpi/rootfs/usr/include -isystem /home/pi/rpi/rootfs/usr/local/include  -isystem /home/pi/rpi/rootfs/usr/include/arm-linux-gnueabihf -isystem /home/pi/rpi/rootfs/usr/include -isystem /home/pi/rpi/rootfs/usr/local/include   -fsigned-char -W -Wall -Werror=return-type -Werror=non-virtual-dtor -Werror=address -Werror=sequence-point -Wformat -Werror=format-security -Wmissing-declarations -Wmissing-prototypes -Wstrict-prototypes -Wundef -Winit-self -Wpointer-arith -Wshadow -Wno-narrowing -Wno-comment -fdiagnostics-show-option -pthread -fomit-frame-pointer -mfp16-format=ieee -ffunction-sections -fvisibility=hidden -O3 -DNDEBUG  -DNDEBUG
-    --     C flags (Debug):             -isystem /home/pi/rpi/rootfs/usr/include/arm-linux-gnueabihf -isystem /home/pi/rpi/rootfs/usr/include -isystem /home/pi/rpi/rootfs/usr/local/include  -isystem /home/pi/rpi/rootfs/usr/include/arm-linux-gnueabihf -isystem /home/pi/rpi/rootfs/usr/include -isystem /home/pi/rpi/rootfs/usr/local/include   -fsigned-char -W -Wall -Werror=return-type -Werror=non-virtual-dtor -Werror=address -Werror=sequence-point -Wformat -Werror=format-security -Wmissing-declarations -Wmissing-prototypes -Wstrict-prototypes -Wundef -Winit-self -Wpointer-arith -Wshadow -Wno-narrowing -Wno-comment -fdiagnostics-show-option -pthread -fomit-frame-pointer -mfp16-format=ieee -ffunction-sections -fvisibility=hidden -g  -O0 -DDEBUG -D_DEBUG
+    --     C flags (Release):           -isystem /home/connor/rpi/rootfs/usr/include/arm-linux-gnueabihf -isystem /home/connor/rpi/rootfs/usr/include -isystem /home/connor/rpi/rootfs/usr/local/include  -isystem /home/connor/rpi/rootfs/usr/include/arm-linux-gnueabihf -isystem /home/connor/rpi/rootfs/usr/include -isystem /home/connor/rpi/rootfs/usr/local/include   -fsigned-char -W -Wall -Werror=return-type -Werror=non-virtual-dtor -Werror=address -Werror=sequence-point -Wformat -Werror=format-security -Wmissing-declarations -Wmissing-prototypes -Wstrict-prototypes -Wundef -Winit-self -Wpointer-arith -Wshadow -Wno-narrowing -Wno-comment -fdiagnostics-show-option -pthread -fomit-frame-pointer -mfp16-format=ieee -ffunction-sections -fvisibility=hidden -O3 -DNDEBUG  -DNDEBUG
+    --     C flags (Debug):             -isystem /home/connor/rpi/rootfs/usr/include/arm-linux-gnueabihf -isystem /home/connor/rpi/rootfs/usr/include -isystem /home/connor/rpi/rootfs/usr/local/include  -isystem /home/connor/rpi/rootfs/usr/include/arm-linux-gnueabihf -isystem /home/connor/rpi/rootfs/usr/include -isystem /home/connor/rpi/rootfs/usr/local/include   -fsigned-char -W -Wall -Werror=return-type -Werror=non-virtual-dtor -Werror=address -Werror=sequence-point -Wformat -Werror=format-security -Wmissing-declarations -Wmissing-prototypes -Wstrict-prototypes -Wundef -Winit-self -Wpointer-arith -Wshadow -Wno-narrowing -Wno-comment -fdiagnostics-show-option -pthread -fomit-frame-pointer -mfp16-format=ieee -ffunction-sections -fvisibility=hidden -g  -O0 -DDEBUG -D_DEBUG
     --     Linker flags (Release):
     --     Linker flags (Debug):
     --     ccache:                      NO
@@ -280,15 +280,15 @@ To crosscompile `OpenCV`, only packages on the RPi need te be installed.
     --     Use custom HAL:              YES (carotene (ver 0.0.1))
     -- 
     --   OpenCL:                        <Dynamic loading of OpenCL library>
-    --     Include path:                /home/pi/rpi/src/opencv-3.2.0/3rdparty/include/opencl/1.2
+    --     Include path:                /home/connor/rpi/src/opencv-3.2.0/3rdparty/include/opencl/1.2
     --     Use AMDFFT:                  NO
     --     Use AMDBLAS:                 NO
     -- 
     --   Python 2:
     --     Interpreter:                 /usr/bin/python2.7 (ver 2.7.12)
-    --     Libraries:                   /home/pi/rpi/rootfs/usr/lib/arm-linux-gnueabihf/libpython2.7.so (ver 2.7.9)
-    --     numpy:                       /home/pi/rpi/rootfs/usr/lib/python2.7/dist-packages/numpy/core/include (ver undefined - cannot be probed because of the cross-compilation)
-    --     packages path:               /home/pi/rpi/rootfs/usr/local/lib/python2.7/site-packages
+    --     Libraries:                   /home/connor/rpi/rootfs/usr/lib/arm-linux-gnueabihf/libpython2.7.so (ver 2.7.9)
+    --     numpy:                       /home/connor/rpi/rootfs/usr/lib/python2.7/dist-packages/numpy/core/include (ver undefined - cannot be probed because of the cross-compilation)
+    --     packages path:               /home/connor/rpi/rootfs/usr/local/lib/python2.7/site-packages
     -- 
     --   Python 3:
     --     Interpreter:                 NO
@@ -311,14 +311,14 @@ To crosscompile `OpenCV`, only packages on the RPi need te be installed.
     --     Performance tests:           NO
     --     C/C++ Examples:              NO
     -- 
-    --   Install path:                  /home/pi/rpi/rootfs/usr
+    --   Install path:                  /home/connor/rpi/rootfs/usr
     -- 
-    --   cvconfig.h is in:              /home/pi/rpi/build/opencv
+    --   cvconfig.h is in:              /home/connor/rpi/build/opencv
     -- -----------------------------------------------------------------
     -- 
     -- Configuring done
     -- Generating done
-    -- Build files have been written to: /home/pi/rpi/build/opencv
+    -- Build files have been written to: /home/connor/rpi/build/opencv
     ```  
     
     > Note the detection of libraries such as `gtk`, additional modules such as `freetype` and the proper settings for `Python`.
@@ -331,12 +331,12 @@ To crosscompile `OpenCV`, only packages on the RPi need te be installed.
 1. Due to crosscompilation, the installation of `OpenCV` produces and invalid .pc file. This needs to be corrected.
     - Move file to appropiate location
         ```
-        XCS~$ mv /home/pi/rpi/rootfs/usr/lib/pkgconfig/opencv.pc /home/pi/rpi/rootfs/usr/lib/arm-linux-gnueabihf/pkgconfig/opencv.pc
+        XCS~$ mv /home/connor/rpi/rootfs/usr/lib/pkgconfig/opencv.pc /home/connor/rpi/rootfs/usr/lib/arm-linux-gnueabihf/pkgconfig/opencv.pc
         ```
         
     - Update prefix-path in the .pc file. It should become `prefix=/usr`
         ```
-        XCS~$ nano /home/pi/rpi/rootfs/usr/lib/arm-linux-gnueabihf/pkgconfig/opencv.pc
+        XCS~$ nano /home/connor/rpi/rootfs/usr/lib/arm-linux-gnueabihf/pkgconfig/opencv.pc
         ```
         
 ## Synchronisation
@@ -344,12 +344,12 @@ Update `rootfs` on the rpi:
 
 1. Use a direct call:
     ```
-    XCS~$ sudo rsync -auHWv --no-perms --no-owner --no-group /home/pi/rpi/rootfs/ rpizero-local-root:/
+    XCS~$ sudo rsync -auHWv --no-perms --no-owner --no-group /home/connor/rpi/rootfs/ rpizero-local-root:/
     ```
     
 1. Or use the [link-correcting script](4-xc-setup.md#init-repository):
     ```
-    XCS~$ /home/pi/rpicross_notes/sync-vm-rpi.sh
+    XCS~$ /home/connor/rpicross_notes/sync-vm-rpi.sh
     ```
 
 ## Python Bindings
@@ -399,7 +399,7 @@ Steps:
     XCS~$ mkdir -p ~/rpi/build/hello/ocv
     XCS~$ cd ~/rpi/build/hello/ocv
     XCS~$ cmake \
-        cmake -D CMAKE_TOOLCHAIN_FILE=/home/pi/rpicross_notes/rpi-generic-toolchain.cmake \
+        cmake -D CMAKE_TOOLCHAIN_FILE=/home/connor/rpicross_notes/rpi-generic-toolchain.cmake \
         ~/rpicross_notes/hello/ocv
     XCS~$ make
     ```

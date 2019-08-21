@@ -50,7 +50,7 @@ Steps:
         ```
         XCS~$ source ~/rpicross_notes/scripts/ros_native
         XCS~$ roscore
-          ... logging to /home/pi/.ros/log/9c219342-0fc9-11e7-b1fd-08002741e196/roslaunch-XCS-rpizero-2600.log
+          ... logging to /home/connor/.ros/log/9c219342-0fc9-11e7-b1fd-08002741e196/roslaunch-XCS-rpizero-2600.log
           Checking log directory for disk usage. This may take awhile.
           Press Ctrl-C to interrupt
           Done checking log file disk usage. Usage is <1GB.

@@ -31,20 +31,20 @@ For compilation a compiler is needed which can build, create and link our c-code
     
 1. Create links to the proper gcc-binairies.
     ```
-    XCS~$ sudo ln -s /home/pi/rpi/tools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/bin/arm-linux-gnueabihf-gcc /usr/bin/rpizero-gcc
-    XCS~$ sudo ln -s /home/pi/rpi/tools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/bin/arm-linux-gnueabihf-g++ /usr/bin/rpizero-g++
-    XCS~$ sudo ln -s /home/pi/rpi/tools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/bin/arm-linux-gnueabihf-ar /usr/bin/rpizero-ar
-    XCS~$ sudo ln -s /home/pi/rpi/tools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/bin/arm-linux-gnueabihf-ranlib /usr/bin/rpizero-ranlib
+    XCS~$ sudo ln -s /home/connor/rpi/tools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/bin/arm-linux-gnueabihf-gcc /usr/bin/rpizero-gcc
+    XCS~$ sudo ln -s /home/connor/rpi/tools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/bin/arm-linux-gnueabihf-g++ /usr/bin/rpizero-g++
+    XCS~$ sudo ln -s /home/connor/rpi/tools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/bin/arm-linux-gnueabihf-ar /usr/bin/rpizero-ar
+    XCS~$ sudo ln -s /home/connor/rpi/tools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/bin/arm-linux-gnueabihf-ranlib /usr/bin/rpizero-ranlib
     ```
   
 1. Clean up unneeded branches in the tools-directory to save space.
     ```
-    XCS~$ rm -rf /home/pi/rpi/tools/arm-bcm2708/arm-bcm2708*
+    XCS~$ rm -rf /home/connor/rpi/tools/arm-bcm2708/arm-bcm2708*
     ```
    
 ## Note on base-directory
 
-This guide assumes `/home/pi/` to be the `~/` home dir. If you have a different directory, make sure you update the `/home/pi` to the proper path. Note that setting it to `~/` will not work.
+This guide assumes `/home/connor/` to be the `~/` home dir. If you have a different directory, make sure you update the `/home/connor` to the proper path. Note that setting it to `~/` will not work.
 
 ## Setting up `rootfs`
 
@@ -56,7 +56,7 @@ The crosscompiler requires access to (`/usr` and `/lib`) RPi-binairies and libra
     ```
     XCS~$ lsblk
       ...
-    XCS~$ sudo mount /dev/sdb2 /home/pi/rpi/mnt 
+    XCS~$ sudo mount /dev/sdb2 /home/connor/rpi/mnt 
     ```
 1. Create the `rootfs` location
     ```
@@ -65,15 +65,15 @@ The crosscompiler requires access to (`/usr` and `/lib`) RPi-binairies and libra
 
 1. Copy libraries from SDCard and unmount
     ```
-    XCS~$ rsync -auHWv /home/pi/rpi/mnt/lib /home/pi/rpi/rootfs/
-    XCS~$ rsync -auHWv /home/pi/rpi/mnt/usr /home/pi/rpi/rootfs/
+    XCS~$ rsync -auHWv /home/connor/rpi/mnt/lib /home/connor/rpi/rootfs/
+    XCS~$ rsync -auHWv /home/connor/rpi/mnt/usr /home/connor/rpi/rootfs/
     ```
         
  1. OPTIONAL (requires [SDCard backup/reset](#sdcard-backupreset)): create `rootfs` from backup
     ```
-    XCS~$ gzip -dc /home/pi/rpi/img/rpi_backup.img.gz > /home/pi/rpi/img/rpi_backup.img
-    XCS~$ fdisk -l /home/pi/rpi/img/rpi_backup.img
-      Disk /home/pi/rpi/img/rpi_backup.img: 7.3 GiB, 7861174272 bytes, 15353856 sectors
+    XCS~$ gzip -dc /home/connor/rpi/img/rpi_backup.img.gz > /home/connor/rpi/img/rpi_backup.img
+    XCS~$ fdisk -l /home/connor/rpi/img/rpi_backup.img
+      Disk /home/connor/rpi/img/rpi_backup.img: 7.3 GiB, 7861174272 bytes, 15353856 sectors
       Units: sectors of 1 * 512 = 512 bytes
       Sector size (logical/physical): 512 bytes / 512 bytes
       I/O size (minimum/optimal): 512 bytes / 512 bytes
@@ -81,8 +81,8 @@ The crosscompiler requires access to (`/usr` and `/lib`) RPi-binairies and libra
       Disk identifier: 0xa11202a8 
  
       Device                              Boot  Start      End  Sectors  Size Id Type
-      /home/pi/rpi/img/rpi_backup.img1           8192   137215   129024   63M  c W95 FAT32 (LBA)
-      /home/pi/rpi/img/rpi_backup.img2         137216 15353855 15216640  7.3G 83 Linux
+      /home/connor/rpi/img/rpi_backup.img1           8192   137215   129024   63M  c W95 FAT32 (LBA)
+      /home/connor/rpi/img/rpi_backup.img2         137216 15353855 15216640  7.3G 83 Linux
     ```
     > - determine `start` of the filesystem parition, e.g: 137216
     > - determine `unit size`, e.g. 512
@@ -90,10 +90,10 @@ The crosscompiler requires access to (`/usr` and `/lib`) RPi-binairies and libra
     > - mount and copy
     
     ```
-    XCS~$ sudo mount -o loop,offset=70254592 /home/pi/rpi/img/rpi_backup.img /home/pi/rpi/mnt
-    XCS~$ rsync -auHWv /home/pi/rpi/mnt/lib /home/pi/rpi/rootfs/
-    XCS~$ rsync -auHWv /home/pi/rpi/mnt/usr /home/pi/rpi/rootfs/
-    XCS~$ sudo umount /home/pi/rpi/mnt 
+    XCS~$ sudo mount -o loop,offset=70254592 /home/connor/rpi/img/rpi_backup.img /home/connor/rpi/mnt
+    XCS~$ rsync -auHWv /home/connor/rpi/mnt/lib /home/connor/rpi/rootfs/
+    XCS~$ rsync -auHWv /home/connor/rpi/mnt/usr /home/connor/rpi/rootfs/
+    XCS~$ sudo umount /home/connor/rpi/mnt 
     ```
     
 ## SDCard backup/reset
@@ -118,12 +118,12 @@ Syncing or crosscompilation can mistakingly result in faulty libraries or librar
     
 1. Create a (compressed) backup
     ```
-    XCS~$ sudo dd bs=4M if=/dev/sdb | gzip > /home/pi/rpi/img/rpi_backup.img.gz
+    XCS~$ sudo dd bs=4M if=/dev/sdb | gzip > /home/connor/rpi/img/rpi_backup.img.gz
     ```
     
 1. To restore a backup, use:
     ```
-    XCS~$ gzip -dc /home/pi/rpi/img/rpi_backup.img.gz | sudo dd bs=4M of=/dev/sdb
+    XCS~$ gzip -dc /home/connor/rpi/img/rpi_backup.img.gz | sudo dd bs=4M of=/dev/sdb
     ```
 ## Init Repository  
 
@@ -151,12 +151,12 @@ As we do not care much about filepermissions, the call is relatively straighforw
 XCS~$ rsync -auHWv rpizero-local-root:{/usr,/lib} ~/rpi/rootfs
 ```
 
-Which copies all data from `/usr` and `/lib` from the RPi to the VM. Care should be taken with symbolic links (symlinks): links including absolute paths will brake becaue the paths of `/usr` and `/lib` become  `/home/pi/rpi/usr` and `/home/pi/rpi/lib` respectively on the VM. Using the commands `file` and `ln` required links can be fixed:
+Which copies all data from `/usr` and `/lib` from the RPi to the VM. Care should be taken with symbolic links (symlinks): links including absolute paths will brake becaue the paths of `/usr` and `/lib` become  `/home/connor/rpi/usr` and `/home/connor/rpi/lib` respectively on the VM. Using the commands `file` and `ln` required links can be fixed:
 ```
-XCS~$ file /home/pi/rpi/rootfs/usr/lib/arm-linux-gnueabihf/librt.so
-  /home/pi/rpi/rootfs/usr/lib/arm-linux-gnueabihf/librt.so: broken symbolic link to /lib/arm-linux-gnueabihf/librt.so.1
+XCS~$ file /home/connor/rpi/rootfs/usr/lib/arm-linux-gnueabihf/librt.so
+  /home/connor/rpi/rootfs/usr/lib/arm-linux-gnueabihf/librt.so: broken symbolic link to /lib/arm-linux-gnueabihf/librt.so.1
 
-XCS~$:  ln -sf /home/pi/rpi/rootfs/lib/arm-linux-gnueabihf/librt.so.1 /home/pi/rpi/rootfs/usr/lib/arm-linux-gnueabihf/librt.so
+XCS~$:  ln -sf /home/connor/rpi/rootfs/lib/arm-linux-gnueabihf/librt.so.1 /home/connor/rpi/rootfs/usr/lib/arm-linux-gnueabihf/librt.so
 ```
 
 > IMPORTANT: each time `rsync` is used for retrieving libraries from the RPi, the symlinks are updated to the broken links, hence they should be fixed again. It might be usefull to create a simple shell script to fix this such as [`sync-rpi-vm.sh`](scripts/sync-rpi-vm.sh):
@@ -172,7 +172,7 @@ When copying files from the VM to the RPi we do need to take care of file-permis
 
 When taking care of permissions, the sync-command becomes:
 ```
-XCS~$ sudo rsync -auHWv --no-perms --no-owner --no-group /home/pi/rpi/rootfs/ rpizero-local-root:/
+XCS~$ sudo rsync -auHWv --no-perms --no-owner --no-group /home/connor/rpi/rootfs/ rpizero-local-root:/
 ```
 
 It should be noted that this command also updates the 'corrected' symbolic links. Therefore we need to fix these on the RPi. Using [`sync-vm-rpi.sh`](sync-vm-rpi.sh), this correction is done for us. 
@@ -194,7 +194,7 @@ Steps:
     XCS~$ mkdir -p ~/rpi/build/hello/pi
     XCS~$ cd ~/rpi/build/hello/pi
     XCS~$ cmake \
-        -D CMAKE_TOOLCHAIN_FILE=/home/pi/rpicross_notes/rpi-generic-toolchain.cmake \
+        -D CMAKE_TOOLCHAIN_FILE=/home/connor/rpicross_notes/rpi-generic-toolchain.cmake \
         ~/rpicross_notes/hello/pi
     XCS~$ make
     ```
@@ -212,17 +212,17 @@ Steps:
 # Test Setup : Trouble shooting
 
 ```
-Change Dir: /home/pi/rpi/build/hello/pi/CMakeFiles/CMakeTmp
+Change Dir: /home/connor/rpi/build/hello/pi/CMakeFiles/CMakeTmp
 
-Run Build Command:"/home/pi/rpi/rootfs/usr/bin/make" "cmTC_cbaa5/fast"
-/home/pi/rpi/rootfs/usr/bin/make: 1: /home/pi/rpi/rootfs/usr/bin/make: Syntax error: word unexpected (expecting ")"
+Run Build Command:"/home/connor/rpi/rootfs/usr/bin/make" "cmTC_cbaa5/fast"
+/home/connor/rpi/rootfs/usr/bin/make: 1: /home/connor/rpi/rootfs/usr/bin/make: Syntax error: word unexpected (expecting ")"
 ```
 If you encounter such an error, the toolchain invokes the rpi based arm-`make` executable instead of the system-`make` executable. As your computer does not know how to read the arm-based executable, it throws an error. If this happend, you might be able to fix it as noted by [Skammi](https://github.com/HesselM/rpicross_notes/issues/14) :
 
 > I Got in the same issue as some other people that the running the command:
 cmake -D CMAKE_TOOLCHAIN_FILE=~/rpicross_notes/rpi-generic-toolchain.cmake ~/rpicross_notes/hello/pi
 would evoke the RPI make program. I think that is due to the statements:
-set( RPI_ROOTFS /home/pi/rpi/rootfs )
+set( RPI_ROOTFS /home/connor/rpi/rootfs )
 set( CMAKE_FIND_ROOT_PATH ${RPI_ROOTFS} )
 in the "rpi-generic-toolchain.cmake" file. I solved this by adding:
 set( CMAKE_MAKE_PROGRAM "/usr/bin/make" CACHE FILEPATH "")

@@ -13,4 +13,4 @@ files=$(find ~/ros -name "devel*" -type d)
 rsync -auHWvRO --no-perms --no-owner --no-group --delete -e "ssh -o StrictHostKeyChecking=no" $files $host:/
 
 # Copy ROS-source too
-rsync -auHWvRO --no-perms --no-owner --no-group --delete -e "ssh -o StrictHostKeyChecking=no" /home/pi/ros/src_cross/src $host:/
+rsync -auHWvRO --no-perms --no-owner --no-group --delete -e "ssh -o StrictHostKeyChecking=no" /home/connor/ros/src_cross/src $host:/

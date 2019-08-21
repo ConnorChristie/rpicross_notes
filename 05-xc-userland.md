@@ -29,9 +29,9 @@ No additional packages should be required for the RPi or the VM.
     XCS~$ cd ~/rpi/rootfs/usr/src/userland/build/arm-linux/release
     XCS~$ cmake \
       -D CMAKE_ASM_COMPILER=/usr/bin/rpizero-gcc \
-      -D CMAKE_TOOLCHAIN_FILE=/home/pi/rpicross_notes/rpi-generic-toolchain.cmake \
+      -D CMAKE_TOOLCHAIN_FILE=/home/connor/rpicross_notes/rpi-generic-toolchain.cmake \
       -D CMAKE_BUILD_TYPE=Release \
-      /home/pi/rpi/rootfs/usr/src/userland/
+      /home/connor/rpi/rootfs/usr/src/userland/
     ```
     This should produce an ouput similar to:
   
@@ -57,7 +57,7 @@ No additional packages should be required for the RPi or the VM.
     -- Found PkgConfig: /usr/bin/pkg-config (found version "0.29.1") 
     -- Configuring done
     -- Generating done
-    -- Build files have been written to: /home/pi/rpi/rootfs/usr/src/userland/build/arm-linux/release
+    -- Build files have been written to: /home/connor/rpi/rootfs/usr/src/userland/build/arm-linux/release
     ```
 
 1. Next, `make` userland.
@@ -68,13 +68,13 @@ No additional packages should be required for the RPi or the VM.
   
 1. Install the created libraries:
     ```
-    XCS~$ make install DESTDIR=/home/pi/rpi/rootfs
+    XCS~$ make install DESTDIR=/home/connor/rpi/rootfs
     ```
   
 1. Remove build files from the src.
     ```
     XCS~$ cd ~/
-    XCS~$ rm -rf /home/pi/rpi/rootfs/usr/src/userland/build
+    XCS~$ rm -rf /home/connor/rpi/rootfs/usr/src/userland/build
     ```
  
 ## Synchronisation
@@ -82,12 +82,12 @@ Update `rootfs` on the rpi:
 
 1. Use a direct call:
     ```
-    XCS~$ sudo rsync -auHWv --no-perms --no-owner --no-group /home/pi/rpi/rootfs/ rpizero-local-root:/
+    XCS~$ sudo rsync -auHWv --no-perms --no-owner --no-group /home/connor/rpi/rootfs/ rpizero-local-root:/
     ```
     
 1. Or use the [link-correcting script](04-xc-setup.md#init-repository):
     ```
-    XCS~$ /home/pi/rpicross_notes/sync-vm-rpi.sh
+    XCS~$ /home/connor/rpicross_notes/sync-vm-rpi.sh
     ```
 
 ## Testing
@@ -106,7 +106,7 @@ Steps:
     XCS~$ mkdir -p ~/rpi/build/hello/raspicam
     XCS~$ cd ~/rpi/build/hello/raspicam
     XCS~$ cmake \
-        -D CMAKE_TOOLCHAIN_FILE=/home/pi/rpicross_notes/rpi-generic-toolchain.cmake \
+        -D CMAKE_TOOLCHAIN_FILE=/home/connor/rpicross_notes/rpi-generic-toolchain.cmake \
         ~/rpicross_notes/hello/raspicam
     XCS~$ make
     ```
