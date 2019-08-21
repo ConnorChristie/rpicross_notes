@@ -17,6 +17,7 @@ CMD="$CMD ln -sf $TARGET_ROOT/lib/arm-linux-gnueabihf/librt.so.1 $TARGET_ROOT/us
 CMD="$CMD ln -sf $TARGET_ROOT/lib/arm-linux-gnueabihf/libbz2.so.1.0 $TARGET_ROOT/usr/lib/arm-linux-gnueabihf/libbz2.so;"
 CMD="$CMD ln -sf $TARGET_ROOT/lib/arm-linux-gnueabihf/libncurses.so.5.9 $TARGET_ROOT/usr/lib/arm-linux-gnueabihf/libncurses.so.5;"
 CMD="$CMD ln -sf $TARGET_ROOT/usr/lib/arm-linux-gnueabihf/libpython2.7.so.1.0 $TARGET_ROOT/usr/lib/arm-linux-gnueabihf/libpython2.7.so;"
+CMD="$CMD ln -sf $TARGET_ROOT/lib/arm-linux-gnueabihf/libpthread.so $TARGET_ROOT/lib/arm-linux-gnueabihf/libpthread.so.0;"
 
 # fix links in vm
 eval $CMD
